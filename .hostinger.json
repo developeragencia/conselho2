@@ -1,0 +1,8 @@
+{
+  "framework": "Express",
+  "nodeVersion": "22.x",
+  "buildCommand": "npm run build",
+  "startCommand": "npm start",
+  "rootDirectory": "./",
+  "outputDirectory": "dist/public"
+}

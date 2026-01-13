@@ -8,6 +8,7 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { existsSync } from 'fs';
 import { Pool } from '@neondatabase/serverless';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -29,7 +30,14 @@ app.use((req, res, next) => {
   }
   next();
 });
-app.use(express.static(path.join(__dirname, 'dist/public')));
+// Servir arquivos estáticos
+const staticPath = path.join(__dirname, 'dist', 'public');
+if (existsSync(staticPath)) {
+  app.use(express.static(staticPath));
+} else {
+  // Fallback para public se dist não existir
+  app.use(express.static(path.join(__dirname, 'public')));
+}
 
 // Storage híbrido
 let db;
@@ -342,9 +350,20 @@ app.get('/api/consultants/:slug', async (req, res) => {
   }
 });
 
-// Frontend
+// Frontend - SPA fallback
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/public/index.html'));
+  // Ignorar requisições de API
+  if (req.path.startsWith('/api/')) {
+    return res.status(404).json({ error: 'Not found' });
+  }
+  
+  const indexPath = path.join(__dirname, 'dist/public/index.html');
+  if (existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    // Fallback se não encontrar index.html
+    res.status(404).send('Página não encontrada. Execute "npm run build" primeiro.');
+  }
 });
 
 // Start
