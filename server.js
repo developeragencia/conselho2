@@ -350,25 +350,39 @@ app.get('/api/consultants/:slug', async (req, res) => {
   }
 });
 
-// Frontend - SPA fallback
-app.get('*', (req, res) => {
+// Frontend - SPA fallback (deve ser a última rota)
+app.get('*', (req, res, next) => {
   // Ignorar requisições de API
   if (req.path.startsWith('/api/')) {
     return res.status(404).json({ error: 'Not found' });
   }
   
-  const indexPath = path.join(__dirname, 'dist/public/index.html');
+  // Tentar dist/public primeiro
+  let indexPath = path.join(__dirname, 'dist/public/index.html');
+  if (!existsSync(indexPath)) {
+    // Fallback para public
+    indexPath = path.join(__dirname, 'public/index.html');
+  }
+  
   if (existsSync(indexPath)) {
     res.sendFile(indexPath);
   } else {
-    // Fallback se não encontrar index.html
     res.status(404).send('Página não encontrada. Execute "npm run build" primeiro.');
   }
 });
 
 // Start
-initDB().then(() => {
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Conselhos Esotéricos rodando na porta ${PORT}`);
-  });
-});
+const startServer = async () => {
+  try {
+    await initDB();
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`✅ Conselhos Esotéricos rodando na porta ${PORT}`);
+      console.log(`📁 Servindo arquivos de: ${existsSync(path.join(__dirname, 'dist/public')) ? 'dist/public' : 'public'}`);
+    });
+  } catch (error) {
+    console.error('❌ Erro ao iniciar servidor:', error);
+    process.exit(1);
+  }
+};
+
+startServer();
