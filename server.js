@@ -325,6 +325,17 @@ app.get('/api/consultants', async (req, res) => {
   }
 });
 
+// Rota para consultores em destaque (compatibilidade)
+app.get('/api/consultants/featured', async (req, res) => {
+  try {
+    const consultants = await getConsultants();
+    res.json(consultants);
+  } catch (error) {
+    console.error('Erro ao buscar consultores em destaque:', error);
+    res.status(500).json({ error: 'Erro ao buscar consultores' });
+  }
+});
+
 // Rota para buscar consultor por slug
 app.get('/api/consultants/:slug', async (req, res) => {
   try {
