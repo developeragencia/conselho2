@@ -1,19 +1,27 @@
-node_modules
-dist
+# PHP
+/vendor/
+composer.lock
+*.log
+*.cache
+
+# Database
+*.sqlite
+*.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
 .DS_Store
-server/public
-vite.config.ts.*
-*.tar.gz
-.git.backup.*
+Thumbs.db
 
-.local/
-.config/
-attached_assets/
+# Node (removido, mas mantendo por segurança)
+node_modules/
+package-lock.json
 
-.git.bak/
-
-# Replit
-.replit
-.replit.new
-.replit.toml
-replit.md
+# Build
+dist/
+build/
