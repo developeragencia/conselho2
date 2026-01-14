@@ -38,11 +38,37 @@
                 <a href="/consultores">Consultores</a>
                 <a href="/blog">Blog</a>
                 <a href="/creditos">CrÃ©ditos</a>
-                <a href="/painel-cliente">Painel</a>
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <a href="/dashboard">Painel</a>
+                <?php endif; ?>
             </div>
             <div class="nav-actions">
-                <a class="btn btn-outline" href="/login">Entrar</a>
-                <a class="btn btn-primary" href="/registro">Criar Conta</a>
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <?php if (($_SESSION['user_role'] ?? '') === 'admin'): ?>
+                        <a class="btn btn-outline" href="/admin">Admin</a>
+                    <?php elseif (($_SESSION['user_role'] ?? '') === 'consultor'): ?>
+                        <a class="btn btn-outline" href="/painel-consultor">Consultor</a>
+                    <?php else: ?>
+                        <a class="btn btn-outline" href="/painel-cliente">Cliente</a>
+                    <?php endif; ?>
+                    <button class="btn btn-primary" id="logoutBtn">Sair</button>
+                <?php else: ?>
+                    <a class="btn btn-outline" href="/login">Entrar</a>
+                    <a class="btn btn-primary" href="/registro">Criar Conta</a>
+                <?php endif; ?>
             </div>
         </div>
     </div>
+
+<?php if (isset($_SESSION['user_id'])): ?>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('logoutBtn');
+    if (!btn) return;
+    btn.addEventListener('click', async () => {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      window.location.href = '/';
+    });
+  });
+</script>
+<?php endif; ?>

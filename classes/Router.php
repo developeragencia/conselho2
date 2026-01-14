@@ -15,9 +15,10 @@ class Router {
         $this->routes['GET']['/api/consultants/featured'] = 'ApiController@getConsultantsFeatured';
         $this->routes['GET']['/api/consultants/:slug'] = 'ApiController@getConsultantBySlug';
         $this->routes['POST']['/api/auth/login'] = 'ApiController@login';
+        $this->routes['POST']['/api/auth/logout'] = 'ApiController@logout';
         $this->routes['POST']['/api/test/register'] = 'ApiController@register';
-        
-        // Rotas de pÃ¡ginas
+
+        // Rotas de páginas
         $this->routes['GET']['/'] = 'PageController@home';
         $this->routes['GET']['/consultores'] = 'PageController@consultores';
         $this->routes['GET']['/consultores/:slug'] = 'PageController@consultorDetalhes';
@@ -25,7 +26,10 @@ class Router {
         $this->routes['GET']['/login'] = 'PageController@login';
         $this->routes['GET']['/registro'] = 'PageController@registro';
         $this->routes['GET']['/creditos'] = 'PageController@creditos';
-        $this\->routes['GET']['/dashboard'] = 'PageController@dashboard';\n        \->routes['GET']['/painel-cliente'] = 'PageController@painelCliente';\n        \->routes['GET']['/painel-consultor'] = 'PageController@painelConsultor';\n        \->routes['GET']['/admin'] = 'PageController@admin';
+        $this->routes['GET']['/dashboard'] = 'PageController@dashboard';
+        $this->routes['GET']['/painel-cliente'] = 'PageController@painelCliente';
+        $this->routes['GET']['/painel-consultor'] = 'PageController@painelConsultor';
+        $this->routes['GET']['/admin'] = 'PageController@admin';
     }
     
     public function dispatch() {

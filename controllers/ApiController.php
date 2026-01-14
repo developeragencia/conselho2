@@ -120,4 +120,10 @@ class ApiController {
             echo json_encode(['error' => 'Email já cadastrado']);
         }
     }
+
+    public function logout($params = []) {
+        session_unset();
+        session_destroy();
+        echo json_encode(['success' => true]);
+    }
 }

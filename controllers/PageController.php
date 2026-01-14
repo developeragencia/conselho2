@@ -56,6 +56,21 @@ class PageController {
         }
         include ROOT_PATH . '/views/dashboard.php';
     }
+
+    public function painelCliente($params = []) {
+        $this->requireRole(['cliente']);
+        include ROOT_PATH . '/views/painel-cliente.php';
+    }
+
+    public function painelConsultor($params = []) {
+        $this->requireRole(['consultor']);
+        include ROOT_PATH . '/views/painel-consultor.php';
+    }
+
+    public function admin($params = []) {
+        $this->requireRole(['admin']);
+        include ROOT_PATH . '/views/admin.php';
+    }
     
     private function getConsultants($limit = null) {
         $sql = "SELECT * FROM consultants ORDER BY rating DESC, review_count DESC";
@@ -75,6 +90,19 @@ class PageController {
     private function getSpecialties() {
         $stmt = $this->db->query("SELECT DISTINCT specialty FROM consultants WHERE specialty IS NOT NULL");
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    private function requireRole(array $roles) {
+        if (!isset($_SESSION['user_id'], $_SESSION['user_role'])) {
+            header('Location: /login');
+            exit;
+        }
+
+        if (!in_array($_SESSION['user_role'], $roles, true)) {
+            http_response_code(403);
+            include ROOT_PATH . '/views/403.php';
+            exit;
+        }
     }
 }
 
