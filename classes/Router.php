@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Sistema de Roteamento
  */
@@ -17,7 +17,7 @@ class Router {
         $this->routes['POST']['/api/auth/login'] = 'ApiController@login';
         $this->routes['POST']['/api/test/register'] = 'ApiController@register';
         
-        // Rotas de páginas
+        // Rotas de pÃ¡ginas
         $this->routes['GET']['/'] = 'PageController@home';
         $this->routes['GET']['/consultores'] = 'PageController@consultores';
         $this->routes['GET']['/consultores/:slug'] = 'PageController@consultorDetalhes';
@@ -25,7 +25,7 @@ class Router {
         $this->routes['GET']['/login'] = 'PageController@login';
         $this->routes['GET']['/registro'] = 'PageController@registro';
         $this->routes['GET']['/creditos'] = 'PageController@creditos';
-        $this->routes['GET']['/dashboard'] = 'PageController@dashboard';
+        $this\->routes['GET']['/dashboard'] = 'PageController@dashboard';\n        \->routes['GET']['/painel-cliente'] = 'PageController@painelCliente';\n        \->routes['GET']['/painel-consultor'] = 'PageController@painelConsultor';\n        \->routes['GET']['/admin'] = 'PageController@admin';
     }
     
     public function dispatch() {
@@ -41,7 +41,7 @@ class Router {
             return;
         }
         
-        // Verificar rotas com parâmetros
+        // Verificar rotas com parÃ¢metros
         foreach ($this->routes[$method] as $route => $handler) {
             if ($this->matchRoute($route, $path, $params)) {
                 $this->callRoute($handler, $params);

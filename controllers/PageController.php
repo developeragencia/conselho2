@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 /**
- * Controller de Páginas
+ * Controller de PÃ¡ginas
  */
 class PageController {
     private $db;
@@ -77,3 +77,4 @@ class PageController {
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 }
+
