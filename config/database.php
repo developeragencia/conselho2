@@ -7,10 +7,13 @@ class Database {
     private $conn;
     
     private function __construct() {
-        $host = getenv('DB_HOST') ?: 'localhost';
-        $dbname = getenv('DB_NAME') ?: 'conselhos_esotericos';
-        $username = getenv('DB_USER') ?: 'root';
-        $password = getenv('DB_PASS') ?: '';
+        // Configuração Hostinger - conselhosesotericos.com.br
+        require_once ROOT_PATH . '/config/config.php';
+        
+        $host = getenv('DB_HOST') ?: DB_HOST;
+        $dbname = getenv('DB_NAME') ?: DB_NAME;
+        $username = getenv('DB_USER') ?: DB_USER;
+        $password = getenv('DB_PASS') ?: DB_PASS;
         
         try {
             $this->conn = new PDO(
@@ -27,10 +30,16 @@ class Database {
             // Criar tabelas automaticamente
             $this->createTables();
         } catch (PDOException $e) {
+            error_log("Erro de conexão MySQL: " . $e->getMessage());
             // Se não conseguir conectar, usar SQLite como fallback
-            $this->conn = new PDO('sqlite:' . ROOT_PATH . '/database.sqlite');
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->createTables();
+            try {
+                $this->conn = new PDO('sqlite:' . ROOT_PATH . '/database.sqlite');
+                $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $this->createTables();
+            } catch (PDOException $e2) {
+                error_log("Erro de conexão SQLite: " . $e2->getMessage());
+                throw new Exception("Não foi possível conectar ao banco de dados");
+            }
         }
     }
     

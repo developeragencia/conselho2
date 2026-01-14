@@ -25,6 +25,7 @@ class Router {
         $this->routes['GET']['/login'] = 'PageController@login';
         $this->routes['GET']['/registro'] = 'PageController@registro';
         $this->routes['GET']['/creditos'] = 'PageController@creditos';
+        $this->routes['GET']['/dashboard'] = 'PageController@dashboard';
     }
     
     public function dispatch() {

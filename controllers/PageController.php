@@ -49,6 +49,14 @@ class PageController {
         include ROOT_PATH . '/views/creditos.php';
     }
     
+    public function dashboard($params = []) {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /login');
+            exit;
+        }
+        include ROOT_PATH . '/views/dashboard.php';
+    }
+    
     private function getConsultants($limit = null) {
         $sql = "SELECT * FROM consultants ORDER BY rating DESC, review_count DESC";
         if ($limit) {
