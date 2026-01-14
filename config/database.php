@@ -8,12 +8,17 @@ class Database {
     
     private function __construct() {
         // Configuração Hostinger - conselhosesotericos.com.br
-        require_once ROOT_PATH . '/config/config.php';
-        
-        $host = getenv('DB_HOST') ?: DB_HOST;
-        $dbname = getenv('DB_NAME') ?: DB_NAME;
-        $username = getenv('DB_USER') ?: DB_USER;
-        $password = getenv('DB_PASS') ?: DB_PASS;
+        if (defined('DB_HOST')) {
+            $host = DB_HOST;
+            $dbname = DB_NAME;
+            $username = DB_USER;
+            $password = DB_PASS;
+        } else {
+            $host = getenv('DB_HOST') ?: 'localhost';
+            $dbname = getenv('DB_NAME') ?: 'u812652203_esotico';
+            $username = getenv('DB_USER') ?: 'u812652203_esotico20';
+            $password = getenv('DB_PASS') ?: 'Conselhos950094';
+        }
         
         try {
             $this->conn = new PDO(

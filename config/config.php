@@ -3,6 +3,10 @@
  * Configurações Gerais do Site
  */
 
+if (!defined('ROOT_PATH')) {
+    define('ROOT_PATH', dirname(__DIR__));
+}
+
 // Domínio
 define('DOMAIN', 'conselhosesotericos.com.br');
 define('BASE_URL', 'https://' . DOMAIN);
